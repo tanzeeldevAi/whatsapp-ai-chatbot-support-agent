@@ -1,0 +1,35 @@
+# ============================================================
+# SECRETS AND PRIVATE DATA - never commit anything in here.
+# ============================================================
+
+# API keys
+.env
+*.key
+
+# THE WHATSAPP SESSION. This is a live login to the account.
+# Anyone who gets this folder is linked to your WhatsApp.
+data/auth/
+data/auth-*/
+
+# Databases: every message the bot has ever seen, plus contacts.
+# The folder itself is kept (the app and the tests write into it), but
+# nothing inside it is ever committed.
+data/*
+!data/.gitkeep
+exports/
+
+# Your own course material and student lists.
+notes/
+notes-batch1/
+
+# runtime
+node_modules/
+*.log
+npm-debug.log*
+
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

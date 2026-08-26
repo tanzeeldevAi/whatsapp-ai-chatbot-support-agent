@@ -1,0 +1,63 @@
+# Nothing is exposed and no domain is needed.
+#
+# The bot opens an outbound connection to WhatsApp, the same as WhatsApp Web
+# does, so there is no webhook for Meta to reach and no HTTPS certificate to
+# issue. It does not touch Traefik, Coolify or anything else on the box.
+#
+# The volume holds two things that must survive a rebuild: the database and
+# the WhatsApp session. Delete the session and the phone has to link it again.
+services:
+  wa-support-bot:
+    build: .
+    container_name: wa-support-bot
+    restart: unless-stopped
+    env_file: .env
+    # Published only so the linking page can be opened from a browser while
+    # you scan. It serves nothing but /healthz and the secret /qr path, and
+    # the QR page only exists while LINK_TOKEN is set. Clear the token once
+    # the phone has linked.
+    ports:
+      - '${QR_PORT:-127.0.0.1:3111}:3000'
+    volumes:
+      - wa-support-data:/data
+    # The link needs a real clock; a container drifting by minutes produces
+    # decryption failures that look like random dropped messages.
+    environment:
+      - TZ=Asia/Karachi
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+
+  # A second linked device, whose only job is to collect the history.
+  #
+  # Separate on purpose. WhatsApp allows four linked devices, so this one can
+  # be linked, unlinked and retried as many times as it takes while the bot
+  # keeps answering people. It has no model and no worker: it cannot send a
+  # message even if something goes badly wrong.
+  #
+  # Start it only when collecting:  docker compose up -d sh-archiver
+  # Stop it when done:              docker compose stop sh-archiver
+  sh-archiver:
+    build: .
+    container_name: sh-archiver
+    restart: unless-stopped
+    profiles: ['archive']
+    env_file: .env
+    command: ['node', 'scripts/archiver.mjs']
+    ports:
+      - '${ARCH_BIND:-127.0.0.1}:3112:3000'
+    volumes:
+      - sh-arch-data:/data
+    environment:
+      - TZ=Asia/Karachi
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+
+volumes:
+  wa-support-data:
+  sh-arch-data:
