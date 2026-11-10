@@ -12,7 +12,7 @@ inventing an answer.
 
 [![Node](https://img.shields.io/badge/Node-20%2B-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![WhatsApp](https://img.shields.io/badge/WhatsApp-linked%20device-25D366?logo=whatsapp&logoColor=white)](#why-a-linked-device-and-not-the-cloud-api)
-[![Tests](https://img.shields.io/badge/tests-104%20passing-brightgreen)](#step-3--prove-it-works-before-linking-anything)
+[![Tests](https://github.com/tanzeeldevAi/whatsapp-ai-chatbot-support-agent/actions/workflows/tests.yml/badge.svg)](https://github.com/tanzeeldevAi/whatsapp-ai-chatbot-support-agent/actions/workflows/tests.yml)
 [![Developed by Tanzeel](https://img.shields.io/badge/Developed%20by-Tanzeel-6C3EF5)](https://github.com/tanzeeldevAi)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
